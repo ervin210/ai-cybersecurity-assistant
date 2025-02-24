@@ -50,3 +50,327 @@ import App from './App.vue';
 new Vue({
   render: h => h(App),
 }).$mount('#app');
+
+<template>
+  <div id="app">
+    <!-- Watermark with Your Name -->
+    <div class="watermark">CONFIDENTIAL - NDA PROTECTED - Created by Your Name</div>
+
+    <!-- AI Assistant Chatbox -->
+    <div class="chatbox">
+      <div class="chat-header">
+        <span class="chat-title">AI Cybersecurity Assistant</span>
+      </div>
+      <div class="chat-body">
+        <div v-for="(message, index) in messages" :key="index" class="message">
+          <span v-if="message.isUser" class="user-message">{{ message.text }}</span>
+          <span v-else class="ai-message">{{ message.text }}</span>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input v-model="userInput" @keydown.enter="sendMessage" type="text" placeholder="Ask me about your system security..." />
+        <button @click="sendMessage" class="send-btn">Send</button>
+      </div>
+    </div>
+
+    <!-- Floating AI Boot -->
+    <div class="boot" @click="handleBootClick">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Boot" class="boot-icon"/>
+      <p class="boot-text">Click to interact</p>
+    </div>
+
+    <!-- Notification -->
+    <div v-if="showNotification" class="notification">
+      <h2 class="notification-title">{{ notificationTitle }}</h2>
+      <p class="notification-message">{{ notificationMessage }}</p>
+      <button @click="dismissNotification" class="dismiss-btn">Dismiss</button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      userInput: '',
+      messages: [
+        { text: 'Welcome to your AI Cybersecurity Assistant. How can I help you today?', isUser: false }
+      ],
+      showNotification: false,
+      notificationTitle: '',
+      notificationMessage: '',
+      taskRunning: false
+    };
+  },
+  methods: {
+    sendMessage() {
+      if (this.userInput.trim() === '') return;
+
+      // Add user message to the chat
+      this.messages.push({ text: this.userInput, isUser: true });
+
+      // Simulate AI response with a delay
+      setTimeout(() => {
+        this.messages.push({ text: this.getAIResponse(this.userInput), isUser: false });
+        this.userInput = ''; // Clear input
+      }, 1000);
+    },
+    getAIResponse(userMessage) {
+      // AI simple response logic (You can make this more advanced)
+      if (userMessage.toLowerCase().includes('help')) {
+        return 'I can help with various tasks such as scanning your system, checking for vulnerabilities, and providing security advice.';
+      } else if (userMessage.toLowerCase().includes('scan')) {
+        this.simulateSecurityScan();
+        return 'Scanning your system for vulnerabilities...';
+      } else if (userMessage.toLowerCase().includes('hack')) {
+        return 'Alert! A potential hacking attempt detected. Running security checks...';
+      } else if (userMessage.toLowerCase().includes('firewall')) {
+        return 'Your firewall settings are outdated. Would you like me to help you update them?';
+      } else {
+        return 'I am your AI Cybersecurity Assistant. How can I assist you today?';
+      }
+    },
+    handleBootClick() {
+      if (this.taskRunning) return;
+
+      // Simulate cybersecurity alert
+      this.simulateCybersecurityCheck();
+    },
+    simulateCybersecurityCheck() {
+      this.taskRunning = true;
+      this.notificationTitle = 'AI Cybersecurity Alert!';
+      this.notificationMessage = 'Suspicious activity detected. Scanning your device for threats...';
+      this.showNotification = true;
+
+      setTimeout(() => {
+        // After 3 seconds, simulate finding a problem
+        this.notificationTitle = 'Threat Detected';
+        this.notificationMessage = 'A potential hacking attempt was detected. Taking action to fix the issue...';
+        this.showNotification = true;
+
+        setTimeout(() => {
+          this.notificationTitle = 'Issue Fixed';
+          this.notificationMessage = 'The threat has been neutralized and your device is secure.';
+          this.showNotification = true;
+          this.taskRunning = false;
+        }, 3000);
+      }, 3000);
+    },
+    simulateSecurityScan() {
+      this.taskRunning = true;
+      this.notificationTitle = 'Running System Scan';
+      this.notificationMessage = 'Looking for vulnerabilities... Please wait.';
+      this.showNotification = true;
+
+      setTimeout(() => {
+        this.notificationTitle = 'Scan Complete';
+        this.notificationMessage = 'No issues detected. Your system is secure.';
+        this.showNotification = true;
+        this.taskRunning = false;
+      }, 5000);
+    },
+    dismissNotification() {
+      this.showNotification = false;
+    }
+  }
+};
+</script>
+
+<style scoped>
+#app {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1f2c5e, #263b60); /* Dark blue gradient */
+  padding: 20px;
+  color: #fff;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Watermark */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  user-select: none;
+  z-index: -1; /* Keep watermark in the background */
+}
+
+/* AI Chatbox */
+.chatbox {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.chat-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.chat-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00f5ff; /* Neon blue */
+}
+
+.chat-body {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+.message {
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.user-message {
+  text-align: right;
+  background-color: #4e9ce9;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  max-width: 75%;
+  margin-left: auto;
+}
+
+.ai-message {
+  text-align: left;
+  background-color: #263b60;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  max-width: 75%;
+  margin-right: auto;
+}
+
+.chat-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-input input {
+  width: 80%;
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  background-color: #333;
+  color: white;
+  font-size: 14px;
+}
+
+.send-btn {
+  width: 15%;
+  padding: 10px;
+  background-color: #00f5ff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.send-btn:hover {
+  background-color: #0099cc;
+}
+
+/* Floating AI Boot */
+.boot {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  background-color: rgba(240, 240, 240, 0.8);
+  padding: 18px 30px;
+  border-radius: 50%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.boot:hover {
+  transform: scale(1.1);
+  background-color: #e0e0e0;
+}
+
+.boot-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.boot-text {
+  font-size: 12px;
+  margin-top: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'Helvetica', sans-serif;
+}
+
+/* Notification */
+.notification {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 450px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.8s ease-out;
+  backdrop-filter: blur(12px); /* Glassmorphism */
+}
+
+.notification-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #3c5362;
+}
+
+.notification-message {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+.dismiss-btn {
+  background-color: #3c5362;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dismiss-btn:hover {
+  background-color: #2e4053;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+
