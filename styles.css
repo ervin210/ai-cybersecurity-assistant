@@ -1,0 +1,13 @@
+/* Watermark with Your Name */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  user-select: none;
+  z-index: -1; /* Keep watermark in the background */
+}
