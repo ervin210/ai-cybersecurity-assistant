@@ -99,7 +99,13 @@ export default {
       showNotification: false,
       notificationTitle: '',
       notificationMessage: '',
-      taskRunning: false
+      taskRunning: false,
+      userProfile: {
+        language: 'en',
+        preferences: {},
+        pastInteractions: [],
+        securitySettings: {}
+      }
     };
   },
   methods: {
@@ -171,7 +177,20 @@ export default {
     },
     dismissNotification() {
       this.showNotification = false;
+    },
+    switchLanguage(language) {
+      this.userProfile.language = language;
+      // Add logic to switch the language of the AI assistant interface
+    },
+    saveUserProfile() {
+      // Add logic to save user profile to a database or local storage
+    },
+    loadUserProfile() {
+      // Add logic to load user profile from a database or local storage
     }
+  },
+  created() {
+    this.loadUserProfile();
   }
 };
 </script>
@@ -286,7 +305,7 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.send-btn:hover {
+send-btn:hover {
   background-color: #0099cc;
 }
 
