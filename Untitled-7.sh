@@ -1,0 +1,2 @@
+mkdir -p security-assistant/backend/routes security-assistant/backend/ai security-assistant/frontend/src
+touch security-assistant/backend/server.js security-assistant/backend/routes/remoteCommands.js security-assistant/backend/ai/problem_solver.py security-assistant/frontend/src/App.js security-assistant/MASTER_LICENSE
