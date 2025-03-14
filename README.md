@@ -16,7 +16,7 @@ A cutting-edge AI-powered security and repository management platform that provi
 
 ```
 npm install
-npm run dev
+npm start
 ```
 
 ## Copyright and License
